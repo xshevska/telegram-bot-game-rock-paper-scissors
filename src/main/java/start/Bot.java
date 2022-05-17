@@ -38,11 +38,15 @@ public class Bot {
         BaseRequest request = null; //сюда будем складывать ответ
 
         if (inlineQuery != null) {
-            InlineQueryResultArticle paper = buildInbutton("paper", "Paper", "0");
-            InlineQueryResultArticle scissors = buildInbutton("scissors", "Scissors", "1");
-            InlineQueryResultArticle rock = buildInbutton("rock", "Rock", "2");
+            InlineQueryResultArticle paper = buildInbutton("paper", "\uD83E\uDD0F Paper", "0");
+            InlineQueryResultArticle scissors = buildInbutton("scissors", "✌️Scissors", "1");
+            InlineQueryResultArticle rock = buildInbutton("rock", "✊ Rock ", "2");
 
             request = new AnswerInlineQuery(inlineQuery.id(), paper, scissors, rock);
+
+
+
+
         } else if (message != null) {
             long chatId = update.message().chat().id();
             request = new SendMessage(chatId, "Hello, Jakubko!");
@@ -64,7 +68,7 @@ public class Bot {
                 //сохраняем данные
                 .replyMarkup(
                         new InlineKeyboardMarkup(
-                                new InlineKeyboardButton("Loading...").callbackData(callbackData)
+                                new InlineKeyboardButton("Processing...").callbackData(callbackData)
                         )
                 );
     }
