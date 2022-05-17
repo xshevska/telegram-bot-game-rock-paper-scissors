@@ -9,6 +9,7 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.InlineQueryResultArticle;
+import com.pengrad.telegrambot.request.AnswerInlineQuery;
 import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.request.SendMessage;
 
@@ -37,15 +38,11 @@ public class Bot {
         BaseRequest request = null; //сюда будем складывать ответ
 
         if (inlineQuery != null) {
-            InlineQueryResultArticle paper =
-                    new InlineQueryResultArticle("paper", "Paper", "I'm ready to fight")
-                            //сохраняем данные
-                            .replyMarkup(
-                                    new InlineKeyboardMarkup(
-                                            new InlineKeyboardButton("Loading...").callbackData("0")
-                                    )
-                            );
+            InlineQueryResultArticle paper = buildInbutton("paper", "Paper", "0");
+            InlineQueryResultArticle scissors = buildInbutton("scissors", "Scissors", "1");
+            InlineQueryResultArticle rock = buildInbutton("rock", "Rock", "2");
 
+            request = new AnswerInlineQuery(inlineQuery.id(), paper, scissors, rock);
         } else if (message != null) {
             long chatId = update.message().chat().id();
             request = new SendMessage(chatId, "Hello, Jakubko!");
@@ -62,6 +59,15 @@ public class Bot {
 
     }
 
+    private InlineQueryResultArticle buildInbutton(String id, String title, String callbackData) {
+        return new InlineQueryResultArticle(id, title, "I'm ready to fight")
+                //сохраняем данные
+                .replyMarkup(
+                        new InlineKeyboardMarkup(
+                                new InlineKeyboardButton("Loading...").callbackData(callbackData)
+                        )
+                );
+    }
 
 
 }
